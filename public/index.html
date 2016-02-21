@@ -4,6 +4,8 @@
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
+    <script src="/jquery-1.12.0.min.js"></script>
+    <script src="/jquery-canvas-sparkles.js"></script>
     <style>
       html, body {
         height: 100%;
@@ -14,23 +16,83 @@
         height: 100%;
       }
     </style>
-    <style>
-
-[{"featureType":"water","elementType":"geometry","stylers":[{"color":"#193341"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#2c5a71"}]},{"featureType":"road","elementType":"geometry","stylers":[{"color":"#29768a"},{"lightness":-37}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#406d80"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#406d80"}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#3e606f"},{"weight":2},{"gamma":0.84}]},{"elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"weight":0.6},{"color":"#1a3541"}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#2c5a71"}]}]
-    </style>
   </head>
-  <body>
+  <body style="background-color:blue;">
+    <div id="star" style="width:11px;height:11px;"></div>
     <div id="map"></div>
     <script>
+    $(function() {
+    });
+    </script>
+    <script>
       var map;
+
+      function createMarker(width, height, radius) {
+
+        var canvas, context;
+
+        canvas = document.createElement("canvas");
+
+        canvas.width = width;
+        canvas.height = height;
+
+        context = canvas.getContext("2d");
+
+        context.clearRect(0,0,width,height);
+
+        // background is yellow
+        context.fillStyle = "rgba(255,255,0,1)";
+
+        // border is black
+        context.strokeStyle = "rgba(0,0,0,1)";
+
+        context.beginPath();
+        context.moveTo(radius, 0);
+        context.lineTo(width - radius, 0);
+        context.quadraticCurveTo(width, 0, width, radius);
+        context.lineTo(width, height - radius);
+        context.quadraticCurveTo(width, height, width - radius, height);
+        context.lineTo(radius, height);
+        context.quadraticCurveTo(0, height, 0, height - radius);
+        context.lineTo(0, radius);
+        context.quadraticCurveTo(0, 0, radius, 0);
+        context.closePath();
+
+        context.fill();
+        context.stroke();
+
+
+        return canvas.toDataURL();
+
+      }
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+          zoom: 2,
+          styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#193341"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#2c5a71"}]},{"featureType":"road","elementType":"geometry","stylers":[{"color":"#29768a"},{"lightness":-37}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#406d80"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#406d80"}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#3e606f"},{"weight":2},{"gamma":0.84}]},{"elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"weight":0.6},{"color":"#1a3541"}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#2c5a71"}]}]
         });
+          // creating a marker
+      $("#star").sparkle({ 
+          "color": ["#ff0080","#ff0080","#FFF"] , 
+          count: 1,
+          minSize: 5,
+          maxSize: 9,
+          speed: 0
+      });
+      $("#star").trigger("start.sparkle")
+            .off("mouseover.sparkle")
+            .off("mouseout.sparkle")
+            .off("focus.sparkle")
+            .off("blur.sparkle")
+          var marker = new google.maps.Marker({
+              position: new google.maps.LatLng(-25.363882,131.044922),
+              map: map,
+              title:"Hello World!",
+              icon: $("#star > canvas")[0].toDataURL()
+          });
       }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTtIDSl66uqhqncumyWjgBy5eYYJOYLlw&callback=initMap"
-    async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTtIDSl66uqhqncumyWjgBy5eYYJOYLlw&callback=initMap" async defer></script>
   </body>
+
 </html>
