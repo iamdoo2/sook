@@ -21,10 +21,12 @@
       * { -webkit-tap-highlight-color: rgba(255, 255, 255, 0); }
     </style>
 
+    <link rel="stylesheet" href="/jquery.modal-min.css" type="text/css" media="screen" />
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="/koala.js"></script>
     <script src="/jquery.runner-min.js"></script>
+    <script src="/jquery.modal-min.js" type="text/javascript" charset="utf-8"></script>
     <script>
       var img;
       var playing = false;
@@ -93,6 +95,10 @@
     <div id="hint">HINT!</div>
     <div id="ranking">RANKING</div>
     <div id="elapsed_time"><span id="runner"></span></div>
+    <div id="ex1" style="display:none;">
+      <p>Thanks for clicking.  That felt good.  <a href="#" rel="modal:close">Close</a> or press ESC</p>
+    </div>
+    <p><a href="#ex1" rel="modal:open">Open Modal</a></p>
   </body>
 </html>
 
