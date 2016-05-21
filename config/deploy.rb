@@ -3,14 +3,15 @@ lock '3.4.0'
 
 set :application, 'sook'
 set :repo_url, 'git@github.com:iamdoo2/sook.git'
+set :repo_url, 'https://github.com/iamdoo2/sook.git'
 set :passenger_restart_with_touch, true
 set :delayed_job_roles, :all
+set :deploy_to, "/home/ec2-user/#{fetch(:application)}"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, '/var/www/my_app_name'
 set :rvm_ruby_version, '2.2.4'
 
 # Default value for :scm is :git
