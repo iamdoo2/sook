@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <%= csrf_meta_tags %>
+    <link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
 
     <style>
       body { background-color: #000; color: #777; margin: 10px; font-size: 16px; }
@@ -20,13 +21,12 @@
       ::selection { background-color: transparent; }
       * { -webkit-tap-highlight-color: rgba(255, 255, 255, 0); }
     </style>
-
-    <link rel="stylesheet" href="/jquery.modal-min.css" type="text/css" media="screen" />
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="/koala.js"></script>
+    <script src="/bootstrap.min.js"></script>
     <script src="/jquery.runner-min.js"></script>
-    <script src="/jquery.modal-min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/modal.js"></script>
     <script>
       var img;
       var playing = false;
@@ -93,12 +93,28 @@
     <div id="dots"></div>
     <div id="progress"></div>
     <div id="hint">HINT!</div>
-    <div id="ranking">RANKING</div>
+    <div id="ranking"><span id="open_modal" data-toggle="modal" data-target="#myModal">랭킹확인</span></div>
     <div id="elapsed_time"><span id="runner"></span></div>
-    <div id="ex1" style="display:none;">
-      <p>Thanks for clicking.  That felt good.  <a href="#" rel="modal:close">Close</a> or press ESC</p>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+          </div>
+          <div class="modal-body">
+            <p>Some text in the modal.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <p><a href="#ex1" rel="modal:open">Open Modal</a></p>
+  
   </body>
 </html>
 
