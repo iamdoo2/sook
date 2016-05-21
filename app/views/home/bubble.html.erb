@@ -31,7 +31,7 @@
       var n, maxN = 5, lastN = -1;
 
       function update(msg) {
-        //if (!playing) return;
+        if (!playing) return;
         document.getElementById('progress').innerHTML = msg;
       }
 
@@ -50,8 +50,10 @@
 
       function endGame() {
         $('#runner').runner('stop');
-        var dots = document.getElementById('dots');
+        update("100%");
         playing = false;
+
+        var dots = document.getElementById('dots');
         img.width = dots.offsetWidth;
         img.height = dots.offsetHeight;
         $(dots).empty().append(img);
