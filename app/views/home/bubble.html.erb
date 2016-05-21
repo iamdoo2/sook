@@ -76,6 +76,9 @@
         $('#runner').runner();
         $('html, body').css({'overflow': 'hidden', 'height': '100%' });
         startGame();
+        $('#open_modal').on('touchstart', function () {
+          $('#open_modal').click();
+        });
         $('#hint').on('click touchstart', function () {
           $(this).toggleClass('on');
           if ($(this).hasClass('on')){
