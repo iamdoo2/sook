@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   end
 
   def bubble
+    layout false
   end
 
   def ranking
