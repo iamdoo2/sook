@@ -80,7 +80,7 @@
                    .attr('cy', function(d) { return d.y; })
                    .attr('r', function(d) { return d.size / 2; })
                    .attr('fill', function(d) { return String(d.rgb); })
-                   .attr('fill-opacity', function(d) { return (d.size == minSize && hint) ? 0.5 : 1.0})
+                   .attr('fill-opacity', function(d) { return (d.size == minSize || !hint) ? 1.0 : 0.7})
                    .each('end',  function(d) { d.node = this; });
   }
 

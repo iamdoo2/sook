@@ -7,5 +7,10 @@ class HomeController < ApplicationController
   end
 
   def ranking
+    @ranks = Ranking.all
+  end
+
+  def submit_rank
+    render :text => 3
   end
 end

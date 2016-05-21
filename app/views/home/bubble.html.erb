@@ -4,11 +4,12 @@
     <title>슉이슉이</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <%= csrf_meta_tags %>
 
     <style>
       body { background-color: #000; color: #777; margin: 10px; font-size: 16px; }
-      #progress { position: absolute; top: 0; left: 0; padding: 5px;}
-      #hint { position: absolute; top: 0; right: 0; padding: 5px; cursor:pointer}
+      #progress { position: absolute; top: 0; left: 0; padding: 5px; margin-top:10px;}
+      #hint { position: absolute; top: 0; right: 0; padding: 5px; margin-top:10px; cursor:pointer}
       #ranking { position: absolute; bottom: 0; left: 0; padding: 5px; cursor: pointer; }
       #elapsed_time { position: absolute; bottom: 0; right: 0; padding: 5px;}
       #hint.on { color: #aa22af; }
@@ -44,17 +45,27 @@
         img.src = '/img/' + n + '.jpg';
         img.src = '/img/' + "2" + '.jpg';
         lastN = n;
-        $('#hint').removeClass('on');
+        $('#hint').addClass('on');
       }
 
       function endGame() {
+        $('#runner').runner('stop');
         var dots = document.getElementById('dots');
         playing = false;
         img.width = dots.offsetWidth;
         img.height = dots.offsetHeight;
         $(dots).empty().append(img);
-        var name = prompt("이름을 입력해주슉","가쟤는계편");
-        alert("랭킹 정보가 입력되었습니다.")
+        name = prompt("이름을 입력해주슉","가쟤는계편");
+        elapsed_time = $('#runner').runner('info').time
+        csrfValue = $("meta[name='csrf-token']").attr('content');
+
+        $.ajax({
+          method: "POST",
+          url: "/home/submit_rank",
+          data: { name: name, elapsed_time: elapsed_time, authenticity_token: csrfValue }
+        }).done(function(msg) {
+          alert(msg + "등 입니다!")
+        });
       }
 
       window.onload = function() {
@@ -63,8 +74,12 @@
         startGame();
         $('#hint').on('click touchstart', function () {
           $(this).toggleClass('on');
-          var o = $(this).hasClass('on') ? 0.5 : 1.0;
-          d3.select('div#dots').selectAll('circle').filter(function(e) { if (!e.isSplitable()) return e; }).attr('fill-opacity', o);
+          if ($(this).hasClass('on')){
+            d3.select('div#dots').selectAll('circle').filter(function(e) { if (!e.isSplitable()) return e; }).attr('fill-opacity', 1.0);
+            d3.select('div#dots').selectAll('circle').filter(function(e) { if (e.isSplitable()) return e; }).attr('fill-opacity', 0.5);
+          }else{
+            d3.select('div#dots').selectAll('circle').filter(function(e) { return e; }).attr('fill-opacity', 1.0);
+          }
         });
       };
     </script>
