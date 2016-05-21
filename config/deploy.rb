@@ -54,7 +54,7 @@ namespace :deploy do
   end
 
   task :reset_db do  
-    on roles(:db), in: :groups, limit: 3, wait: 10 do
+    on roles(:api), in: :groups, limit: 3, wait: 10 do
       within release_path do  
         with rails_env: fetch(:rails_env) do
           execute :rake, "db:drop"
