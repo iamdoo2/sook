@@ -58,6 +58,7 @@ namespace :deploy do
       within release_path do  
         with rails_env: fetch(:rails_env) do
           execute :rake, "db:drop"
+          execute :rake, "db:create"
           execute :rake, "db:migrate"
         end 
       end 
