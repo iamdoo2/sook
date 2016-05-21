@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>슉이슉이</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <style>
+      body { background-color: #000; color: #777; margin: 10px; font-size: 16px; }
+      #progress { position: absolute; top: 0; right: 0; padding: 5px; }
+      #hint { position: absolute; top: 0; left: 0; padding: 5px; cursor: pointer; }
+      #hint.on { color: #33f; }
+      svg, circle { pointer-events: none; }
+      a { color: #77f; text-decoration: none; }
+      #dots { position: absolute; top: 50%; left: 50%; }
+      #dots img { padding: 4px; background-color: #ecf0f1; border-radius: 6px; }
+      ::selection { background-color: transparent; }
+      * { -webkit-tap-highlight-color: rgba(255, 255, 255, 0); }
+    </style>
+
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="/koala.js"></script>
+    <script>
+      var img;
+      var playing = false;
+      var n, maxN = 5, lastN = -1;
+
+      function update(msg) {
+        if (!playing) return;
+        document.getElementById('progress').innerHTML = msg;
+      }
+
+      function startGame() {
+        playing = true;
+        while (true) { n = Math.floor(Math.random() * maxN); if (maxN <= 1 || lastN != n) break; }
+        $('#dots').empty();
+        img = new Image();
+        img.onload = function() { makeCircles(loadImage(this), update); };
+        img.src = './img/' + n + '.jpg';
+        img.src = './img/' + "2" + '.jpg';
+        lastN = n;
+        $('#hint').removeClass('on');
+      }
+
+      function endGame() {
+        var dots = document.getElementById('dots');
+        playing = false;
+        img.width = dots.offsetWidth;
+        img.height = dots.offsetHeight;
+        $(dots).empty().append(img);
+        update('Clear! <a href="javascript:startGame()">Play again?</a>');
+        alert("hi")
+      }
+
+      window.onload = function() {
+        startGame();
+        $('#hint').click(function () {
+          $(this).toggleClass('on');
+          var o = $(this).hasClass('on') ? 0.5 : 1.0;
+          d3.select('div#dots').selectAll('circle').filter(function(e) { if (!e.isSplitable()) return e; }).attr('fill-opacity', o);
+        });
+      };
+    </script>
+  </head>
+
+  <body>
+    <div id="dots"></div>
+    <div id="progress"></div>
+    <div id="hint">★</div>
+  </body>
+</html>
+
