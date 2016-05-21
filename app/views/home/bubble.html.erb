@@ -76,9 +76,10 @@
         $('#runner').runner();
         $('html, body').css({'overflow': 'hidden', 'height': '100%' });
         startGame();
-        $('#open_modal').on('touchstart', function () {
-          $('#open_modal').click();
-        });
+        $('#open_modal').on('touchstart', function () { $('#open_modal').click(); });
+        $('#close_modal').on('touchstart', function () { $('#close_modal').click(); });
+        $('#close_modal2').on('touchstart', function () { $('#close_modal2').click(); });
+        $('#myModal').on('touchstart', function () { $('#myModal').click(); });
         $('#hint').on('click touchstart', function () {
           $(this).toggleClass('on');
           if ($(this).hasClass('on')){
@@ -105,14 +106,14 @@
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" id="close_modal2" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Modal Header</h4>
           </div>
           <div class="modal-body">
             <p>Some text in the modal.</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" id="close-modal" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
