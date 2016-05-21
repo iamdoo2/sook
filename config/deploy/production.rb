@@ -6,6 +6,7 @@
 # server 'example.com', user: 'deploy', roles: %w{app db web}, my_property: :my_value
 # server 'example.com', user: 'deploy', roles: %w{app web}, other_property: :other_value
 # server 'db.example.com', user: 'deploy', roles: %w{db}
+set :deploy_to, "/home/ec2-user/#{fetch(:application)}"
 
 
 
@@ -20,6 +21,7 @@
 # role :app, %w{deploy@example.com}, my_property: :my_value
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
+role :api, %w{ec2-user@jisook.net}
 
 
 
@@ -33,6 +35,15 @@
 
 
 
+set :pem_key_location, '~/pems/votelion.pem'
+server s,
+  user: 'ec2-user',
+  roles: %w{api},
+  ssh_options: {
+    keys: ["#{fetch(:pem_key_location)}".strip],
+    forward_agent: false,
+    auth_methods: %w(publickey)
+  }
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a

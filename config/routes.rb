@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
+
+  if ENV['current_product'] == "bubble"
+    get '/', controller: 'home', action: "bubble"
+  else
+    get '/', controller: 'home', action: "map"
+  end
+
   get 'home/map'
-
   get 'home/bubble'
-
   get 'home/ranking'
 
   # The priority is based upon order of creation: first created -> highest priority.

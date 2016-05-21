@@ -1,73 +1,101 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>슉이슉이</title>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+    <script src="/jquery-1.12.0.min.js"></script>
+    <script src="/jquery-canvas-sparkles.js"></script>
     <style>
-      body { background-color: #000; color: #777; margin: 10px; font-size: 16px; }
-      #progress { position: absolute; top: 0; right: 0; padding: 5px; }
-      #hint { position: absolute; top: 0; left: 0; padding: 5px; cursor: pointer; }
-      #hint.on { color: #33f; }
-      svg, circle { pointer-events: none; }
-      a { color: #77f; text-decoration: none; }
-      #dots { position: absolute; top: 50%; left: 50%; }
-      #dots img { padding: 4px; background-color: #ecf0f1; border-radius: 6px; }
-      ::selection { background-color: transparent; }
-      * { -webkit-tap-highlight-color: rgba(255, 255, 255, 0); }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
     </style>
-
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="/koala.js"></script>
-    <script>
-      var img;
-      var playing = false;
-      var n, maxN = 5, lastN = -1;
-
-      function update(msg) {
-        if (!playing) return;
-        document.getElementById('progress').innerHTML = msg;
-      }
-
-      function startGame() {
-        playing = true;
-        while (true) { n = Math.floor(Math.random() * maxN); if (maxN <= 1 || lastN != n) break; }
-        $('#dots').empty();
-        img = new Image();
-        img.onload = function() { makeCircles(loadImage(this), update); };
-        img.src = './img/' + n + '.jpg';
-        img.src = './img/' + "2" + '.jpg';
-        lastN = n;
-        $('#hint').removeClass('on');
-      }
-
-      function endGame() {
-        var dots = document.getElementById('dots');
-        playing = false;
-        img.width = dots.offsetWidth;
-        img.height = dots.offsetHeight;
-        $(dots).empty().append(img);
-        update('Clear! <a href="javascript:startGame()">Play again?</a>');
-        alert("hi")
-      }
-
-      window.onload = function() {
-        startGame();
-        $('#hint').click(function () {
-          $(this).toggleClass('on');
-          var o = $(this).hasClass('on') ? 0.5 : 1.0;
-          d3.select('div#dots').selectAll('circle').filter(function(e) { if (!e.isSplitable()) return e; }).attr('fill-opacity', o);
-        });
-      };
-    </script>
   </head>
+  <body style="background-color:blue;">
+    <div id="map"></div>
+    <script>
+      function CustomMarker(latlng,  map) {
+        this.latlng_ = latlng;
+        // Once the LatLng and text are set, add the overlay to the map.  This will
+        // trigger a call to panes_changed which should in turn call draw.
+        this.setMap(map);
+      }
 
-  <body>
-    <div id="dots"></div>
-    <div id="progress"></div>
-    <div id="hint">★</div>
+      function initMap() {
+        // Custom Marker
+        CustomMarker.prototype = new google.maps.OverlayView();
+
+        CustomMarker.prototype.draw = function() {
+          var me = this;
+
+          // Check if the div has been created.
+          var div = this.div_;
+          if (!div) {
+
+            // Create a overlay text DIV
+            div = this.div_ = document.createElement('DIV');
+            div.style.border = "none";
+            div.style.width = "11px";
+            div.style.height = "11px";
+            div.style.position = "absolute";
+            div.style.cursor = 'pointer';
+            $(div).sparkle({ 
+              "color": "rainbow",
+              count: 1, speed: 0,
+              minSize: 5, maxSize: 9
+            }).trigger("start.sparkle").off("mouseover.sparkle")
+              .off("mouseout.sparkle").off("focus.sparkle").off("blur.sparkle")
+
+            
+            //google.maps.event.addDomListener(div, "click", function(event) {
+            //  google.maps.event.trigger(me, "click");
+            //});
+
+            // Then add the overlay to the DOM
+            var panes = this.getPanes();
+            panes.overlayImage.appendChild(div);
+
+          }
+
+          // Position the overlay 
+          var point = this.getProjection().fromLatLngToDivPixel(this.latlng_);
+          if (point) {
+            div.style.left = point.x + 'px';
+            div.style.top = point.y + 'px';
+          }
+        };
+
+        CustomMarker.prototype.getPosition = function() {
+         return this.latlng_;
+        };
+        // End of Custom Marker
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {
+            lat: 36.659881638392406,
+            lng: 127.92755126953125
+          },
+          zoom: 6,
+          minZoom : 6,
+          maxZoom : 6,
+          streetViewControl:false,
+          styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#193341"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#2c5a71"}]},{"featureType":"road","elementType":"geometry","stylers":[{"color":"#29768a"},{"lightness":-37}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#406d80"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#406d80"}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#3e606f"},{"weight":2},{"gamma":0.84}]},{"elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"administrative","elementType":"geometry","stylers":[{"weight":0.6},{"color":"#1a3541"}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#2c5a71"}]}]
+        });
+
+        for(i = 0; i < 1; i++){
+          position = new google.maps.LatLng(
+                   37.046682921500576, 127.24639892578125
+              )
+          overlay = new CustomMarker(position, map);
+        }
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTtIDSl66uqhqncumyWjgBy5eYYJOYLlw&callback=initMap" async defer></script>
   </body>
 </html>
-
