@@ -2,21 +2,6 @@
 // https://github.com/vogievetsky/KoalasToTheMax (modified)
 
 (function() {
-  function sound(src) {
-      this.sound = document.createElement("audio");
-      this.sound.src = src;
-      this.sound.setAttribute("preload", "auto");
-      this.sound.setAttribute("controls", "none");
-      this.sound.style.display = "none";
-      document.body.appendChild(this.sound);
-      this.play = function(){
-          this.sound.play();
-      }
-      this.stop = function(){
-          this.sound.pause();
-      }
-  }
-
   function array2d(w, h) {
     var a = [];
     return function(x, y, v) {
@@ -57,8 +42,6 @@
     delete this.node;
     Circle.addToVis(this.vis, this.children);
     this.onSplit(this);
-    //sound
-    mySound.play();
   }
 
   Circle.prototype.checkIntersection = function(startPoint, endPoint) {
@@ -107,7 +90,6 @@
   var minSize = 4;
 
   loadImage = function(imageData) {
-    mySound = new sound("/bounce.mp3");
     dim = maxSize / minSize;
     var canvas = document.createElement('canvas').getContext('2d');
     canvas.drawImage(imageData, 0, 0, dim, dim);
