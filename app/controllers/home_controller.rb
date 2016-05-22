@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   end
 
   def ranking
-    @ranks = Ranking.order("elapsedtime asc").first(10)
+    @ranks = Ranking.order("elapsedtime asc").first(5)
     render json: @ranks
   end
 
