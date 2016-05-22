@@ -1,5 +1,5 @@
 $("#button-modal").click(function(){
-    Show("modal-id");
+  Show("modal-id");
 });
 
 //Fix modal mobile Boostrap 3

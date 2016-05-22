@@ -50,7 +50,6 @@
     <script src="/koala.js"></script>
     <script src="/bootstrap.min.js"></script>
     <script src="/jquery.runner-min.js"></script>
-    <script src="/modal.js"></script>
     <script>
       var img;
       var playing = false;
@@ -102,6 +101,10 @@
         $('#runner').runner();
         $('html, body').css({'overflow': 'hidden', 'height': '100%' });
         startGame();
+        $('#open_modal').on('click', function () { 
+            //$('#open_modal').click(); 
+            alert("HI");
+        });
         $('#open_modal').on('touchstart', function () { $('#open_modal').click(); });
         $('#close_modal').on('touchstart', function () { $('#close_modal').click(); });
         $('#close_modal2').on('touchstart', function () { $('#close_modal2').click(); });
@@ -143,7 +146,6 @@
         </div>
       </div>
     </div>
-  
   </body>
 </html>
 
