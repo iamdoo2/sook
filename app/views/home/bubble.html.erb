@@ -53,7 +53,7 @@
     <script>
       var img;
       var playing = false;
-      var n, maxN = 5, lastN = -1;
+      var n, maxN = 10, lastN = -1;
 
       function update(msg) {
         if (!playing) return;
@@ -68,7 +68,6 @@
         img = new Image();
         img.onload = function() { makeCircles(loadImage(this), update); };
         img.src = '/img/' + n + '.jpg';
-        img.src = '/img/' + "2" + '.jpg';
         lastN = n;
         $('#hint').addClass('on');
       }
@@ -84,7 +83,7 @@
         img.width = dots.offsetWidth;
         img.height = dots.offsetHeight;
         $(dots).empty().append(img);
-        ranker_name = prompt("완성했슉!\n이름을 입력해주슉","가쟤는계편");
+        ranker_name = prompt("완성했슉!\n이름을 입력해주슉","");
 
         if (ranker_name != null) {
           $.ajax({
@@ -110,11 +109,11 @@
             $("#rankers").append("<thead><tr><th>걸린시간</th><th>이름</th><th>날짜</th></tr></thead>")
             for(var i=0;i<msg.length;i++){
               $("#rankers").append(
-      "<tr>" + 
-        "<td>" + msg[i]['elapsed_time'] + "</td>" + 
-        "<td>" + msg[i]['ranker_name'] + "</td>" + 
-        "<td>" + msg[i]['created_at'] + "</td>" +
-      "</tr>"
+                "<tr>" + 
+                  "<td>" + msg[i]['elapsed_time'] + "</td>" + 
+                  "<td>" + msg[i]['ranker_name'] + "</td>" + 
+                  "<td>" + msg[i]['created_at'] + "</td>" +
+                "</tr>"
               );
             }
           });
