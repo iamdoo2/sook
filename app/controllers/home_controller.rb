@@ -7,10 +7,16 @@ class HomeController < ApplicationController
   end
 
   def ranking
-    @ranks = Ranking.all
+    @ranks = Ranking.order("elapsedtime asc").first(10)
+    render json: @ranks
   end
 
   def submit_rank
-    render :text => 3
+    r = Ranking.new
+    r.username = params[:ranker_name]
+    r.elapsedtime = params[:elapsed_time]
+    r.save
+    rank = Ranking.order("elapsedtime asc").map{|x| x.id}.index(r.id) + 1
+    render :text => rank
   end
 end

@@ -14,8 +14,10 @@
 ActiveRecord::Schema.define(version: 20160521044705) do
 
   create_table "rankings", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "elapsedtime", default: 0,    null: false
+    t.string   "username",    default: "익명", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
 end

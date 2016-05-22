@@ -76,6 +76,8 @@
 
       function endGame() {
         $('#runner').runner('stop');
+        elapsed_time = $('#runner').runner('info').time
+        csrfValue = $("meta[name='csrf-token']").attr('content');
         update("100%");
         playing = false;
 
@@ -83,17 +85,17 @@
         img.width = dots.offsetWidth;
         img.height = dots.offsetHeight;
         $(dots).empty().append(img);
-        name = prompt("이름을 입력해주슉","가쟤는계편");
-        elapsed_time = $('#runner').runner('info').time
-        csrfValue = $("meta[name='csrf-token']").attr('content');
+        ranker_name = prompt("완성했슉!\n이름을 입력해주슉","가쟤는계편");
 
-        $.ajax({
-          method: "POST",
-          url: "/home/submit_rank",
-          data: { name: name, elapsed_time: elapsed_time, authenticity_token: csrfValue }
-        }).done(function(msg) {
-          alert(msg + "등 입니다!")
-        });
+        if (ranker_name != null) {
+          $.ajax({
+            method: "POST",
+            url: "/home/submit_rank",
+            data: { ranker_name: ranker_name, elapsed_time: elapsed_time, authenticity_token: csrfValue }
+          }).done(function(msg) {
+            alert(msg + "등 입니다!")
+          });
+        }
       }
 
       window.onload = function() {
