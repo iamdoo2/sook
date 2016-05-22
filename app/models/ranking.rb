@@ -10,7 +10,7 @@ class Ranking < ActiveRecord::Base
   end
 
   def time_converting sec
-    Time.at(sec/1000.0).utc.strftime("%M:%S.%L")
+    Time.at(sec/1000.0).utc.strftime("%M분 %S초 %L")
   end
 
 end
